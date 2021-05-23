@@ -50,7 +50,7 @@ function savecookie(idToke, res) {
             res.cookie('__session', sessionCookie, options)
 
             admin.auth().verifyIdToken(idToke).then(function (decodedClaims) {
-                res.redirect('/success')
+                res.redirect('/dashboard')
             })
         }, error => {
             console.log(error)
@@ -70,8 +70,6 @@ function checkCookie(req, res, next) {
         .catch(error => {
             res.redirect('/login')
         })
-
 }
 
-app.listen(3000)
-
+app.listen(process.env.PORT || 3000)

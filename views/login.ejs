@@ -33,7 +33,7 @@
 
         firebase.initializeApp(config)
         firebase.auth().setPersistence(
-            firebase.auth.Auth.Persistence.NONE)
+            firebase.auth.Auth.Persistence.LOCAL)
 
         var uiConfig = {
             signInOptions: [
