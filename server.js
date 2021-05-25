@@ -1,14 +1,15 @@
 const express = require('express')
-const bodyParser = require("body-parser")
-const admin = require("firebase-admin")
-const cookieParser = require("cookie-parser")
+const admin = require('firebase-admin')
+const mongoose = require('mongoose')
+const router = require('./routers/userRouter')
+const axios = require('axios')
 require('dotenv').config()
 
 const app = express()
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
-app.use(cookieParser())
+app.use('/user', router)
 
 var key = process.env.KEY
 
@@ -19,6 +20,18 @@ admin.initializeApp({
         "project_id": "cohelp-hackon"
     })
 })
+
+mongoose.connect(
+    process.env.MongoDB,
+    {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    },
+    () => {
+        console.log("connected")
+    }
+)
 
 app.get('/', (req, res) => {
     res.render('index')

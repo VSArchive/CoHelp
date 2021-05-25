@@ -191,7 +191,17 @@
                     sessionStorage.setItem('Name', user.displayName)
                     sessionStorage.setItem('user', JSON.stringify(user))
 
-                    window.location.href = "/dashboard"
+                    if (user.createdAt == user.lastLoginAt) {
+
+                        let uid = user.uid,
+                            displayName = user.displayName,
+                            photoURL = user.photoURL.replace("https://lh3.googleusercontent.com/a-/", ""),
+                            email = user.email
+
+                        window.location.href = "/user/save/" + uid + "/" + email + "/" + displayName + "/" + photoURL
+                    } else {
+                        window.location.href = "/dashboard"
+                    }
                 }
             }
         }
