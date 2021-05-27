@@ -120,21 +120,21 @@
                 <img src="images/vineel.jpg">
                 <h3>Vineel sai</h3>
                 <div class="share">
-                   
+
                     <a href="https://twitter.com/vineelsai26" class="fab fa-twitter"></a>
-                   
+
                     <a href="https://github.com/vineelsai26" class="fab fa-github"></a>
                     <a href="https://www.linkedin.com/in/vineelsai26" class="fab fa-linkedin"></a>
                 </div>
-                
+
             </div>
             <div class="box">
                 <img src="images/pavan.jpg">
                 <h3>Pavan kumar Allu</h3>
                 <div class="share">
-                   
+
                     <a href="https://twitter.com/AlluVamsiPavan1" class="fab fa-twitter"></a>
-                   
+
                     <a href="https://github.com/pavankumarallu" class="fab fa-github"></a>
                     <a href="https://www.linkedin.com/in/vamsi-pavan-kumar-allu-2771b41a0/" class="fab fa-linkedin"></a>
                 </div>
@@ -144,9 +144,9 @@
                 <img src="images/nikhil.jpg">
                 <h3>Kotha Nikhil</h3>
                 <div class="share">
-                   
+
                     <a href="https://twitter.com/nikhilkotha5" class="fab fa-twitter"></a>
-                   
+
                     <a href="https://github.com/nikhilkotha03" class="fab fa-github"></a>
                     <a href="https://www.linkedin.com/in/nikhil-kotha-b3b3911b9" class="fab fa-linkedin"></a>
                 </div>
@@ -196,8 +196,8 @@
         firebase.auth().setPersistence(
             firebase.auth.Auth.Persistence.LOCAL)
 
-        if (firebase.auth().currentUser != null) {
-            document.getElementById("signIn").innerText = firebase.auth().currentUser.displayName
+        if (sessionStorage.getItem("user") != null) {
+            document.getElementById("signIn").innerText = JSON.parse(sessionStorage.getItem("user")).displayName
             document.getElementById("username").style.visibility = "visible"
             document.getElementById("signInRegister").style.visibility = "hidden"
             document.getElementById("signInRegister").innerText = ""
@@ -238,7 +238,6 @@
                     sessionStorage.setItem('user', JSON.stringify(user))
 
                     if (user.createdAt == user.lastLoginAt) {
-
                         let uid = user.uid,
                             displayName = user.displayName,
                             photoURL = user.photoURL.replace("https://lh3.googleusercontent.com/a-/", ""),
