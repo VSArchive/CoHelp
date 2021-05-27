@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	 <meta charset="UTF-8">
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	 <title>Co-Help</title>
+	 <!-- font awesome cdn link  -->
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	 <!-- custom css file link  -->
+	 <link rel="stylesheet" href="public/style.css">
+       <!-- Firebase Package-->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase.js"></script>
+
+    <!-- Loads the login UI elements-->
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
+    <link rel="stylesheet" type="text/css" href="public/logstyle.css">
+</head>
+<body>
+
+<!-- header section starts  -->
+
+<header>
+
+    <a href="#" class="logo"><img src="images/Logo-Lightbg.png"> </a>
+
+    <input type="checkbox" id="menu-bar">
+    <label for="menu-bar" class="fas fa-bars"></label>
+
+    <nav class="navbar">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Our Services</a>
+        <a href="#review">Organizations</a>
+        <a href="#pricing">Contact us</a>
+        <a href="#contact" onclick="openLoginForm();">Sign in/Register</a>
+    </nav>
+
+</header>
+
+<!-- header section ends -->
+
+
+<!-- home section starts  -->
+
+<section class="home" id="home">
+
+    <div class="content">
+        <h2>Co-Help</h2>
+        <h3>Make Things happen</h3>
+        <a href="#services" class="btn">Our Services</a>
+    </div>
+     <div class="image">
+     <img src="images/helping_hands.jpg" alt="">
+ </div>
+
+
+</section>
+
+<!-- home Section Ends -->
+
+<!-- about section starts  -->
+
+<section class="about" id="about">
+
+   
+        <div class="inner-section">
+            <h1><span>About</span> Us</h1>
+            <p class="text">
+            	The second COVID-19 wave has hit India with great ferocity and has been virulent ever since. Our kith and kin are infected, hospitals are thronged with patients, ambulances are screaming through the streets, and death is in the air. During a catastrophe, there are two main challenges - maintaining emotional health and addressing distress. Community support and solidarity can mitigate these negative effects. 
+            	This website provides a platform to address, discuss, and share the pandemic blues of individuals and also acts as a medium to aid the needy.
+                
+            </p>
+            <div class="skills">
+                <button>Contact Us</button>
+            </div>
+        
+    </div>
+
+</section>
+
+<!-- about section ends -->
+
+<!-- Services section Starts -->
+
+<section class="services" id="services">
+    <h1>Our Services</h1>
+    <div class="box-container">
+        <div class="box">
+            <img src="images/mentalbg.png">
+            <h3>Mental Awareness rooms</h3>
+            <a href="https://cohelp-call.herokuapp.com/common" class="btn">Join</a>
+        </div>
+        <div class="box">
+            <img src="images/foodbg.png">
+            <h3>Food Requests</h3>
+            <a href="#" class="btn">Request</a>
+        </div>
+        <div class="box">
+            <img src="images/oxybg.png">
+            <h3>Oxygen and Remdesiver supply</h3>
+            <a href="#" class="btn">Request</a>
+        </div>
+
+
+    </div>
+
+    
+</section>
+
+<!-- Services section Ends -->
+
+<!-- Login Section -->
+<div class="popup-overlay">
+        <div class="popup">
+            <div class="popup-close" onclick="RemoveLoginForm();">
+                &times;
+            </div>
+            <div class="form">
+                <div class="avatar"><img src="images/Logo-Lightbg.png"> </div>
+            
+                <div class="header">
+                    <h1>Make Things Happen</h1>
+                </div>
+
+                <div id="firebaseui-auth-container" >
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Login Section Ends -->
+
+
+
+<script type="text/javascript">
+        function openLoginForm(){
+            document.body.classList.add("showLoginForm");
+        }
+        function RemoveLoginForm(){
+            document.body.classList.remove("showLoginForm");
+        }
+</script>
+
+
+<script>
+        var config = {
+            apiKey: "AIzaSyAuEbgzpMJ5X_jbLlazigMIcG8_jKXNEhw",
+            authDomain: "cohelp-hackon.firebaseapp.com",
+            projectId: "cohelp-hackon",
+            storageBucket: "cohelp-hackon.appspot.com",
+            messagingSenderId: "1090347815819",
+            appId: "1:1090347815819:web:5e000a411558e32308d58e",
+            measurementId: "G-1PKMBFVM19"
+        }
+
+        firebase.initializeApp(config)
+        firebase.auth().setPersistence(
+            firebase.auth.Auth.Persistence.NONE)
+
+        var uiConfig = {
+            signInOptions: [
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+            ],
+
+            callbacks: {
+                signInSuccess: function (user,
+                    credential, redirectUrl) {
+                    user.getIdToken().then(function (idToken) {
+                        window.location.href =
+                            '/savecookie?idToken=' + idToken
+                    }).catch(error => {
+                        console.log(error)
+                    })
+                }
+            }
+        }
+        var ui = new firebaseui.auth.AuthUI(firebase.auth())
+        ui.start('#firebaseui-auth-container', uiConfig)
+    </script>
+
+</body>
+</html>
