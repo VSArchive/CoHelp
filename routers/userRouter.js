@@ -23,7 +23,7 @@ router.get('/save/:uid/:email/:displayName/:photoURL', async (req, res) => {
         const saveToDB = await newUser.save()
         res.redirect('/dashboard')
     } catch (err) {
-        res.send(err)
+        res.redirect('/dashboard')
     }
 })
 

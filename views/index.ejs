@@ -137,28 +137,6 @@
     <!-- Login Section Ends -->
 
     <script type="text/javascript">
-        let Name = sessionStorage.getItem('Name')
-        let user = sessionStorage.getItem('user')
-        if (Name != null) {
-            document.getElementById("signIn").innerText = Name
-            document.getElementById("username").style.visibility = "visible"
-            document.getElementById("signInRegister").style.visibility = "hidden"
-            document.getElementById("signInRegister").innerText = ""
-            document.getElementById("signInRegister").style.width = 0
-        }
-
-        function openLoginForm() {
-            document.body.classList.add("showLoginForm")
-        }
-
-        function logout() {
-            sessionStorage.clear()
-            window.location.href = "/"
-        }
-
-        function RemoveLoginForm() {
-            document.body.classList.remove("showLoginForm")
-        }
 
         const config = {
             apiKey: "AIzaSyAuEbgzpMJ5X_jbLlazigMIcG8_jKXNEhw",
@@ -173,6 +151,30 @@
         firebase.initializeApp(config)
         firebase.auth().setPersistence(
             firebase.auth.Auth.Persistence.LOCAL)
+
+        if (firebase.auth().currentUser != null) {
+            document.getElementById("signIn").innerText = firebase.auth().currentUser.displayName
+            document.getElementById("username").style.visibility = "visible"
+            document.getElementById("signInRegister").style.visibility = "hidden"
+            document.getElementById("signInRegister").innerText = ""
+            document.getElementById("signInRegister").style.width = 0
+        }
+
+        function openLoginForm() {
+            document.body.classList.add("showLoginForm")
+        }
+
+        function logout() {
+            sessionStorage.clear()
+            firebase.auth().signOut()
+            window.location.href = "/"
+        }
+
+        function RemoveLoginForm() {
+            document.body.classList.remove("showLoginForm")
+        }
+
+        console.log(firebase.auth())
 
         let uiConfig = {
             signInSuccessUrl: "/dashboard",
