@@ -11,18 +11,32 @@ foodRequestRouter.get('/', async (req, res) => {
     }
 })
 
+foodRequestRouter.get('/delete/:uid', async (req, res) => {
+    try {
+        await foodRequestModel.deleteOne({ uid: req.params.uid }).then(function () {
+            res.redirect("/dashboard")
+        })
+    } catch (err) {
+        console.log(err)
+        res.redirect("/dashboard")
+    }
+})
+
 foodRequestRouter.post('/', async (req, res) => {
     const newFoodRequest = new foodRequestModel({
         uid: req.body.uid,
         displayName: req.body.displayName,
         email: req.body.email,
+        phoneNo: req.body.phoneNo,
         address: req.body.address
     })
 
     try {
-        const saveToDB = await newFoodRequest.save()
-        res.redirect('/dashboard')
+        await newFoodRequest.save().then(function () {
+            res.redirect("/dashboard")
+        })
     } catch (err) {
+        console.log(err)
         res.redirect('/dashboard')
     }
 })

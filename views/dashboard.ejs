@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         referrerpolicy="no-referrer" />
     <link href="css/dash.css" rel="stylesheet">
+    <script>
+        let user = JSON.parse(sessionStorage.getItem("user"))
+    </script>
 </head>
 
 <body>
@@ -22,9 +25,11 @@
                 <div class="col-md-10 col-md-offset-1 col-sm-12">
                     <img id="image" src="images/pavan.jpg">
                     <h1 id="name"></h1>
-                    <h3>Visakhapatnam, Andhra Pradesh<span><i class="fa fa-edit" onclick=""></i></span></h3>
                     <button onclick="openCommonRoom()">Join room</button>
-                    <button>Request food</button>
+                    <button id="request" onclick="openRequestForm();">Request food</button>
+                    <button id="cancel" style="display: none; width: fit-content;" onclick="cancelFoodRequest()">Cancel
+                        Food
+                        Request</button>
                     <button>Oxygen Supply</button>
                 </div>
             </div>
@@ -37,20 +42,32 @@
                 <div class="col-md-10 col-md-offset-1 col-sm-12">
                     <div class="articles">
                         <% for( let index=0; index < foodRequests.length; index++ ) { %>
-                            <div class="article">
+                            <h2 style="display:none;" id=<%=foodRequests[index].email%> >
+                                <%= foodRequests[index].uid %>
+                            </h2>
+                            <div id="<%= foodRequests[index].uid %>" class="article">
                                 <div class="inner">
                                     <div class="post-head">
                                         <h2>
                                             <%= foodRequests[index].displayName %>
                                         </h2>
                                         <h4>
-                                            <%= foodRequests[index].date %>
+                                            Request Date :
+                                            <%= foodRequests[index].date.substring(8, 10) + "/" +
+                                                foodRequests[index].date.substring(5, 7) + "/" +
+                                                foodRequests[index].date.substring(0, 4) %>
                                         </h4>
                                     </div>
                                     <p>
+                                        Email : <%= foodRequests[index].email %>
+                                    </p>
+                                    <p>
+                                        Phone : <%= foodRequests[index].phoneNo %>
+                                    </p>
+                                    <p>
                                         <%= foodRequests[index].address %>
                                     </p>
-
+                                    <button style="float: right; margin: 10px;">Accept Request</button>
                                 </div>
                             </div>
                             <% } %>
@@ -58,10 +75,45 @@
                 </div>
             </div>
         </div>
+
+        <div class="popup-overlay">
+            <div class="popup">
+                <div class="popup-close" onclick="RemoveRequestForm();">
+                    &times;
+                </div>
+                <form method="POST" action="/food" class="form">
+                    <div class="avatar"><img src="images/Logobfg.png"> </div>
+
+                    <div class="header">
+                        <h1>Make Things Happen</h1>
+                    </div>
+                    <input id="uidForm" name="uid" type="text" class="input" style="display: none;" readonly>
+                    <div class="inputfield">
+                        <label>Name</label>
+                        <input id="displayName" name="displayName" type="text" class="input" readonly>
+                    </div>
+                    <div class="inputfield" style="display: none;">
+                        <label>Email Address</label>
+                        <input id="email" name="email" type="text" class="input">
+                    </div>
+                    <div class="inputfield">
+                        <label>Phone Number</label>
+                        <input name="phoneNo" type="text" class="input" required>
+                    </div>
+                    <div class="inputfield">
+                        <label>Address</label>
+                        <textarea name="address" class="textarea" required></textarea>
+                    </div>
+                    <div class="inputfield">
+                        <input type="submit" value="Register" class="btn">
+                    </div>
+
+                </form>
+            </div>
+        </div>
 </body>
 
 <script>
-    let user = JSON.parse(sessionStorage.getItem("user"))
     if (user == null) {
         window.location.href = "/"
     } else {
@@ -70,9 +122,36 @@
         document.getElementById("image").src = user.photoURL
     }
 
+    try {
+        const userID = document.getElementById(user.email).innerText.trim()
+        if (userID == user.uid.trim()) {
+            document.getElementById(userID).style.display = "none"
+            document.getElementById("request").style.display = "none"
+            document.getElementById("cancel").style.display = ""
+        }
+    } catch {
+        console.log(user.email)
+    }
+
+    function cancelFoodRequest() {
+        window.location.href = "/food/delete/" + user.uid
+    }
+
     function openCommonRoom() {
         window.location.href = "/meet/common"
     }
+
+    function openRequestForm() {
+        document.body.classList.add("showLoginForm")
+    }
+
+    function RemoveRequestForm() {
+        document.body.classList.remove("showLoginForm")
+    }
+
+    document.getElementById("uidForm").value = user.uid
+    document.getElementById("displayName").value = user.displayName
+    document.getElementById("email").value = user.email
 
 </script>
 

@@ -20,6 +20,10 @@ const foodRequestSchema = new Schema({
         type: String,
         required: true
     },
+    phoneNo: {
+        type: String,
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now

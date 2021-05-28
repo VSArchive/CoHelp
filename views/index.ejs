@@ -101,12 +101,12 @@
             <div class="box">
                 <img src="images/foodbg.png">
                 <h3>Food Requests</h3>
-                <a href="#" class="btn">Request</a>
+                <a href="#services" onclick="openDashboard()" class="btn">Request</a>
             </div>
             <div class="box">
                 <img src="images/oxybg.png">
                 <h3>Oxygen and Remdesiver supply</h3>
-                <a href="#" class="btn">Request</a>
+                <a href="#services" onclick="openDashboard()" class="btn">Request</a>
             </div>
         </div>
     </section>
@@ -202,6 +202,14 @@
             document.getElementById("signInRegister").style.visibility = "hidden"
             document.getElementById("signInRegister").innerText = ""
             document.getElementById("signInRegister").style.width = 0
+        }
+
+        function openDashboard() {
+            if (sessionStorage.getItem("user") == null) {
+                openLoginForm()
+            } else {
+                window.location.href = "/dashboard"
+            }
         }
 
         function openLoginForm() {
