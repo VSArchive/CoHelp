@@ -1,8 +1,8 @@
 const express = require("express")
-const router = express.Router()
+const userRouter = express.Router()
 const userModel = require('../models/userModel')
 
-router.get('/', async (req, res) => {
+userRouter.get('/', async (req, res) => {
     try {
         const url = await userModel.find()
         res.send(url)
@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/save/:uid/:email/:displayName/:photoURL', async (req, res) => {
+userRouter.get('/save/:uid/:email/:displayName/:photoURL', async (req, res) => {
     const newUser = new userModel({
         uid: req.params.uid,
         displayName: req.params.displayName,
@@ -27,4 +27,4 @@ router.get('/save/:uid/:email/:displayName/:photoURL', async (req, res) => {
     }
 })
 
-module.exports = router
+module.exports = userRouter

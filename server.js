@@ -1,7 +1,10 @@
 const express = require('express')
 const admin = require('firebase-admin')
 const mongoose = require('mongoose')
-const router = require('./routers/userRouter')
+var bodyParser = require("body-parser")
+const userRouter = require('./routers/userRouter')
+const foodRequestRouter = require('./routers/foodRequestRouter')
+const axios = require('axios')
 require('dotenv').config()
 
 const app = express()
@@ -16,7 +19,10 @@ const { v4: uuidV4 } = require('uuid')
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
-app.use('/user', router)
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use('/user', userRouter)
+app.use('/food', foodRequestRouter)
 app.use('/peerjs', peerServer)
 
 var key = process.env.KEY
@@ -46,7 +52,12 @@ app.get('/', (req, res) => {
 })
 
 app.get('/dashboard', (req, res) => {
-    res.render('dashboard')
+    const dbRequestUrl = req.protocol + '://' + req.get('host') + '/food'
+    axios.get(dbRequestUrl)
+        .then(res => res.data)
+        .then((json) => {
+            res.render('dashboard', { foodRequests: json })
+        })
 })
 
 app.get('/meet', (req, res) => {
