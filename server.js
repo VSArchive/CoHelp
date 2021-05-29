@@ -52,11 +52,21 @@ app.get('/', (req, res) => {
 })
 
 app.get('/dashboard', (req, res) => {
-    const dbRequestUrl = req.protocol + '://' + req.get('host') + '/food'
-    axios.get(dbRequestUrl)
+    res.render('dashboard', { foodRequests: [], foodAcceptRequests: [] })
+})
+
+app.get('/dashboard/:uid', (req, res) => {
+    const foodRequestUrl = req.protocol + '://' + req.get('host') + '/food/requested'
+    const foodAcceptRequestUrl = req.protocol + '://' + req.get('host') + '/food/accepted/' + req.params.uid
+    axios.get(foodRequestUrl)
         .then(res => res.data)
-        .then((json) => {
-            res.render('dashboard', { foodRequests: json })
+        .then((foodRequests) => {
+            axios.get(foodAcceptRequestUrl)
+                .then(res => res.data)
+                .then((foodAcceptRequests) => {
+                    console.log(foodAcceptRequests)
+                    res.render('dashboard', { foodRequests: foodRequests, foodAcceptRequests: foodAcceptRequests })
+                })
         })
 })
 

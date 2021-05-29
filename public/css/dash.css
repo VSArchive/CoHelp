@@ -37,6 +37,38 @@ body{
     background-image: linear-gradient(0deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 100%);
 }
 
+
+
+header{
+  background-color: var(--pink);
+  color: #fff;
+}
+header .tabs{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+}
+header .tabs a{
+  display: block;
+  padding: 10px 40px;
+  text-decoration: none;
+  color: #fff;
+  font-size: 13px;
+  white-space: nowrap;
+}
+header .tabs a.active{
+  border-bottom: 5px solid var(--purple);
+}
+
+.tabcontent{
+  display: none;
+}
+.tabcontent:first-of-type{
+  display: block;
+}
+
 .section-blog-header {
   padding: 1em 0 4em 0;
   background: var(--gradient); 
@@ -172,6 +204,14 @@ body.showLoginForm .popup{
     .popup .form .avatar img{
         width: 50%;
     }
+
+    header .tabs{
+    display: block;
+    width: 100%;
+    text-align: center;
+  justify-content: center;
+  align-items: center;
+    }
     
 
 }
@@ -212,7 +252,7 @@ body.showLoginForm .popup{
 
 
 
-}
+    }
 .section-blog {
   padding: 3.25em 0 6em 0;
   background-color: #FF9A8B;
@@ -284,7 +324,7 @@ button:hover{
    
 }
 
- .popup-overlay .popup .form .inputfield{
+.popup-overlay .popup .form .inputfield{
   margin-bottom: 15px;
   display: flex;
   align-items: center;

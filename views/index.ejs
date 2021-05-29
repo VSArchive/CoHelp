@@ -40,7 +40,7 @@
             <div style="visibility: hidden;" id="username" class="dropdown">
                 <a id="signIn" href="#" class="dropbtn"></a>
                 <div class="dropdown-content">
-                    <a href="/dashboard">Dashboard</a>
+                    <a href="/dashboard/" + user.uid>Dashboard</a>
                     <a onclick="logout()" href="#">Logout</a>
                 </div>
             </div>
@@ -208,7 +208,7 @@
             if (sessionStorage.getItem("user") == null) {
                 openLoginForm()
             } else {
-                window.location.href = "/dashboard"
+                window.location.href = "/dashboard/" + user.uid
             }
         }
 
@@ -229,7 +229,6 @@
         console.log(firebase.auth())
 
         let uiConfig = {
-            signInSuccessUrl: "/dashboard",
             signInOptions: [
                 firebase.auth.GoogleAuthProvider.PROVIDER_ID,
                 firebase.auth.FacebookAuthProvider.PROVIDER_ID,
@@ -253,7 +252,7 @@
 
                         window.location.href = "/user/save/" + uid + "/" + email + "/" + displayName + "/" + photoURL
                     } else {
-                        window.location.href = "/dashboard"
+                        window.location.href = "/dashboard" + user.uid
                     }
                 }
             }

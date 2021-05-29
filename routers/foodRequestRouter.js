@@ -1,10 +1,21 @@
 const express = require("express")
 const foodRequestRouter = express.Router()
 const foodRequestModel = require('../models/foodRequestModel')
+const foodAcceptRequestModel = require('../models/foodAcceptRequestModel')
+const userModel = require('../models/userModel')
 
-foodRequestRouter.get('/', async (req, res) => {
+foodRequestRouter.get('/requested', async (req, res) => {
     try {
         const url = await foodRequestModel.find()
+        res.send(url)
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+foodRequestRouter.get('/accepted/:uid', async (req, res) => {
+    try {
+        const url = await foodAcceptRequestModel.findOne({ byUID: req.params.uid })
         res.send(url)
     } catch (err) {
         console.log(err)
@@ -14,11 +25,40 @@ foodRequestRouter.get('/', async (req, res) => {
 foodRequestRouter.get('/delete/:uid', async (req, res) => {
     try {
         await foodRequestModel.deleteOne({ uid: req.params.uid }).then(function () {
-            res.redirect("/dashboard")
+            res.redirect("/dashboard/" + req.params.uid)
         })
     } catch (err) {
         console.log(err)
-        res.redirect("/dashboard")
+        res.redirect("/dashboard/" + req.params.uid)
+    }
+})
+
+foodRequestRouter.get('/accepted/:byUID/:fromUID', async (req, res) => {
+    try {
+        const request = await foodRequestModel.findOne({ uid: req.params.fromUID })
+        const requestUser = await userModel.findOne({ uid: req.params.byUID })
+        await foodRequestModel.deleteOne({ uid: req.params.fromUID })
+        const newFoodAcceptRequest = new foodAcceptRequestModel({
+            fromUID: request.uid,
+            displayName: request.displayName,
+            email: request.email,
+            phoneNo: request.phoneNo,
+            address: request.address,
+            byUID: req.params.byUID,
+            byDisplayName: requestUser.displayName,
+            byEmail: requestUser.email
+        })
+        try {
+            await newFoodAcceptRequest.save().then(function () {
+                res.redirect("/dashboard/" + req.params.byUID)
+            })
+        } catch (err) {
+            console.log(err)
+            res.redirect("/dashboard/" + req.params.byUID)
+        }
+    } catch (err) {
+        console.log(err)
+        res.redirect("/dashboard/" + req.params.byUID)
     }
 })
 
