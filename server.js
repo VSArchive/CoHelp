@@ -5,6 +5,7 @@ var bodyParser = require("body-parser")
 const userRouter = require('./routers/userRouter')
 const foodRequestRouter = require('./routers/foodRequestRouter')
 const axios = require('axios')
+const nodemailer = require('nodemailer')
 require('dotenv').config()
 
 const app = express()
@@ -86,25 +87,15 @@ app.get('/mail/:toEmail/:accepterEmail', (req, res) => {
         }
     })
 
-    const name = req.body.name
-    const email = req.body.email
-    const subject = req.body.subject
-
     const mailOptions = {
-        from: email,
-        to: 'vineelsai26@gmail.com',
-        subject: 'From Website Contact Form By : ' + name,
-        text: subject + '\n\n\n' + email
+        from: 'vineel.sai73@gmail.com',
+        to: req.params.toEmail,
+        subject: 'From CoHelp',
+        text: 'subject' + '\n\n\n' + req.params.accepterEmail
     }
 
     transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error)
-            res.render('mail', { success: false })
-        } else {
-            console.log('Email sent')
-            res.render('mail', { success: true })
-        }
+        res.redirect('/dashboard')
     })
 })
 

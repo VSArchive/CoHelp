@@ -41,7 +41,7 @@
         <header>
             <div class="container">
                 <div class="tabs">
-                    <a role="button" class="active" onclick="openTab(event,'tab1');" tabindex="0">Public reuests</a>
+                    <a role="button" class="active" onclick="openTab(event,'tab1');" tabindex="0">Public Requests</a>
                     <a role="button" onclick="openTab(event,'tab2');" tabindex="0">Accepted Requests</a>
                 </div>
             </div>
@@ -131,6 +131,16 @@
                                             <p>
                                                 <%= foodAcceptRequests[index].address %>
                                             </p>
+
+                                            <button
+                                                onclick="deleteAcceptFoodRequest('<%= foodAcceptRequests[index].fromUID %>')"
+                                                style="float: right; margin: 10px;">Delete</button>
+
+                                            <script>
+                                                function deleteAcceptFoodRequest(uid) {
+                                                    window.location.href = "/food/deleteAccepted/" + uid
+                                                }
+                                            </script>
                                         </div>
                                     </div>
                                     <% } %>
@@ -228,12 +238,11 @@
     const tabcontents = document.querySelectorAll(".tabcontent");
     const tablinks = document.querySelectorAll(".tabs a");
 
+    document.getElementById("tab1").style.display = "block";
+
     function openTab(event, tabName) {
         tabcontents.forEach((tabcontent) => (tabcontent.style.display = "none"));
         tablinks.forEach((tablink) => tablink.classList.remove('active'));
-
-
-
         event.currentTarget.classList.add("active");
         document.getElementById(tabName).style.display = "block";
     }

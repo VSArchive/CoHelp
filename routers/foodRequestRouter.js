@@ -33,6 +33,17 @@ foodRequestRouter.get('/delete/:uid', async (req, res) => {
     }
 })
 
+foodRequestRouter.get('/deleteAccepted/:uid', async (req, res) => {
+    try {
+        await foodAcceptRequestModel.deleteOne({ fromUID: req.params.uid }).then(function () {
+            res.redirect("/dashboard")
+        })
+    } catch (err) {
+        console.log(err)
+        res.redirect("/dashboard/" + req.params.uid)
+    }
+})
+
 foodRequestRouter.get('/accepted/:byUID/:fromUID', async (req, res) => {
     const request = await foodRequestModel.findOne({ uid: req.params.fromUID })
     const requestUser = await userModel.findOne({ uid: req.params.byUID })
@@ -50,7 +61,7 @@ foodRequestRouter.get('/accepted/:byUID/:fromUID', async (req, res) => {
         })
         try {
             await newFoodAcceptRequest.save().then(function () {
-                res.redirect("/dashboard/" + req.params.byUID)
+                res.redirect("/mail/" + request.email + "/" + requestUser.email)
             })
         } catch (err) {
             console.log(err)
