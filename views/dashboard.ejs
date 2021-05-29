@@ -108,28 +108,28 @@
                         <div class="col-md-10 col-md-offset-1 col-sm-12">
                             <div class="articles">
 
-                                <% if (foodAcceptRequests!="" ) { %>
+                                <% for (let index=0; index < foodAcceptRequests.length; index++) { %>
                                     <div class="article">
                                         <div class="inner">
                                             <div class="post-head">
                                                 <h2>
-                                                    <%= foodAcceptRequests.displayName %>
+                                                    <%= foodAcceptRequests[index].displayName %>
                                                 </h2>
                                                 <h4>
                                                     Request Date :
-                                                    <%= foodAcceptRequests.date.substring(8, 10) + "/" +
-                                                        foodAcceptRequests.date.substring(5, 7) + "/" +
-                                                        foodAcceptRequests.date.substring(0, 4) %>
+                                                    <%= foodAcceptRequests[index].date.substring(8, 10) + "/" +
+                                                        foodAcceptRequests[index].date.substring(5, 7) + "/" +
+                                                        foodAcceptRequests[index].date.substring(0, 4) %>
                                                 </h4>
                                             </div>
                                             <p>
-                                                Email : <%= foodAcceptRequests.email %>
+                                                Email : <%= foodAcceptRequests[index].email %>
                                             </p>
                                             <p>
-                                                Phone : <%= foodAcceptRequests.phoneNo %>
+                                                Phone : <%= foodAcceptRequests[index].phoneNo %>
                                             </p>
                                             <p>
-                                                <%= foodAcceptRequests.address %>
+                                                <%= foodAcceptRequests[index].address %>
                                             </p>
                                         </div>
                                     </div>

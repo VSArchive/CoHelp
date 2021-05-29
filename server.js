@@ -64,7 +64,6 @@ app.get('/dashboard/:uid', (req, res) => {
             axios.get(foodAcceptRequestUrl)
                 .then(res => res.data)
                 .then((foodAcceptRequests) => {
-                    console.log(foodAcceptRequests)
                     res.render('dashboard', { foodRequests: foodRequests, foodAcceptRequests: foodAcceptRequests })
                 })
         })
@@ -76,6 +75,37 @@ app.get('/meet', (req, res) => {
 
 app.get('/meet/:room', (req, res) => {
     res.render('room', { roomId: req.params.room })
+})
+
+app.get('/mail/:toEmail/:accepterEmail', (req, res) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD
+        }
+    })
+
+    const name = req.body.name
+    const email = req.body.email
+    const subject = req.body.subject
+
+    const mailOptions = {
+        from: email,
+        to: 'vineelsai26@gmail.com',
+        subject: 'From Website Contact Form By : ' + name,
+        text: subject + '\n\n\n' + email
+    }
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error)
+            res.render('mail', { success: false })
+        } else {
+            console.log('Email sent')
+            res.render('mail', { success: true })
+        }
+    })
 })
 
 io.on('connection', socket => {

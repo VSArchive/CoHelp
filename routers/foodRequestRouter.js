@@ -15,7 +15,7 @@ foodRequestRouter.get('/requested', async (req, res) => {
 
 foodRequestRouter.get('/accepted/:uid', async (req, res) => {
     try {
-        const url = await foodAcceptRequestModel.findOne({ byUID: req.params.uid })
+        const url = await foodAcceptRequestModel.find({ byUID: req.params.uid })
         res.send(url)
     } catch (err) {
         console.log(err)
@@ -34,10 +34,10 @@ foodRequestRouter.get('/delete/:uid', async (req, res) => {
 })
 
 foodRequestRouter.get('/accepted/:byUID/:fromUID', async (req, res) => {
+    const request = await foodRequestModel.findOne({ uid: req.params.fromUID })
+    const requestUser = await userModel.findOne({ uid: req.params.byUID })
+    await foodRequestModel.deleteOne({ uid: req.params.fromUID })
     try {
-        const request = await foodRequestModel.findOne({ uid: req.params.fromUID })
-        const requestUser = await userModel.findOne({ uid: req.params.byUID })
-        await foodRequestModel.deleteOne({ uid: req.params.fromUID })
         const newFoodAcceptRequest = new foodAcceptRequestModel({
             fromUID: request.uid,
             displayName: request.displayName,
@@ -54,11 +54,10 @@ foodRequestRouter.get('/accepted/:byUID/:fromUID', async (req, res) => {
             })
         } catch (err) {
             console.log(err)
-            res.redirect("/dashboard/" + req.params.byUID)
         }
     } catch (err) {
         console.log(err)
-        res.redirect("/dashboard/" + req.params.byUID)
+        await request.save()
     }
 })
 

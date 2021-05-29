@@ -4,7 +4,6 @@ const { Schema } = mongoose
 const foodRequestSchema = new Schema({
     uid: {
         type: String,
-        unique: true,
         required: true
     },
     displayName: {
@@ -13,7 +12,6 @@ const foodRequestSchema = new Schema({
     },
     email: {
         type: String,
-        unique: true,
         required: true
     },
     address: {
