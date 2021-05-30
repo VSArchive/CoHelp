@@ -61,7 +61,7 @@ foodRequestRouter.get('/accepted/:byUID/:fromUID', async (req, res) => {
         })
         try {
             await newFoodAcceptRequest.save().then(function () {
-                res.redirect("/mail/" + request.email + "/" + requestUser.email)
+                res.redirect("/mail/" + request.email + "/" + requestUser.email + "/" + request.displayName + "/" + requestUser.displayName)
             })
         } catch (err) {
             console.log(err)

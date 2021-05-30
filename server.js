@@ -78,7 +78,7 @@ app.get('/meet/:room', (req, res) => {
     res.render('room', { roomId: req.params.room })
 })
 
-app.get('/mail/:toEmail/:accepterEmail', (req, res) => {
+app.get('/mail/:toEmail/:accepterEmail/:toName/:fromName', (req, res) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -91,7 +91,17 @@ app.get('/mail/:toEmail/:accepterEmail', (req, res) => {
         from: 'vineel.sai73@gmail.com',
         to: req.params.toEmail,
         subject: 'From CoHelp',
-        text: 'subject' + '\n\n\n' + req.params.accepterEmail
+        text: `
+        Hlo ${req.params.toName}, we hope this email finds you in a better health. Our Co help team is chuffed to inform you that ${req.params.fromName} has come forward to fulfill your request.
+
+        Request :
+        For food for covid patient
+
+        Donar Details:
+        Name : ${req.params.fromName}
+        Email : ${req.params.accepterEmail}
+        Co-help team is always there for you to fulfill your requests. Let us unite and MAKE THINGS HAPPEN
+        Thank you`
     }
 
     transporter.sendMail(mailOptions, function (error, info) {
